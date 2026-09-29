@@ -1,0 +1,4 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body { @apply bg-dusty-50 text-dusty-900 font-sans antialiased; }
