@@ -86,7 +86,6 @@ export default function Attire() {
           <div key={n} className="w-20">
             <div className="h-16 w-16 mx-auto rounded-full ring-4 ring-white shadow-md" style={{ backgroundColor: c }} />
             <p className="mt-3 text-xs text-dusty-800">{n}</p>
-            <p className="text-[10px] tracking-wider text-dusty-500 uppercase">{c}</p>
           </div>))}
       </div>
 
