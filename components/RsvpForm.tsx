@@ -2,7 +2,7 @@
 import { useState } from "react";
 const V = {
   1: { card: "bg-white/90 rounded-2xl shadow-lg p-8", input: "rounded-lg border border-dusty-200", on: "bg-dusty-600 text-white border-dusty-600", btn: "rounded-full bg-dusty-700 hover:bg-dusty-800" },
-  2: { card: "bg-transparent", input: "rounded-none border-0 border-b border-dusty-300 bg-transparent px-0", on: "bg-dusty-800 text-white border-dusty-800", btn: "rounded-none bg-dusty-800 hover:bg-dusty-900 tracking-widest uppercase" },
+  2: { card: "bg-transparent", input: "rounded-none border-0 border-b border-dusty-300 bg-transparent px-0", on: "bg-dusty-600 border-dusty-800", btn: "rounded-none bg-dusty-800 hover:bg-dusty-900 tracking-widest uppercase" },
   3: { card: "bg-dusty-100 rounded-sm p-8 border border-dusty-300", input: "rounded-sm border border-dusty-300 bg-white", on: "bg-dusty-500 text-white border-dusty-500", btn: "rounded-sm bg-dusty-500 hover:bg-dusty-600" },
 } as const;
 export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {

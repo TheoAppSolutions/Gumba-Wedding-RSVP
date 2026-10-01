@@ -35,7 +35,7 @@ export default function Attire() {
   return (
     <section className="max-w-4xl mx-auto px-6 py-16 text-center">
       <h2 className="font-serif text-4xl mb-2">Attire</h2>
-      <p className="text-dusty-700">{EVENT.dressCode} · {EVENT.color} palette</p>
+      <p className="text-dusty-700">{EVENT.dressCode}</p>
       <div className="mt-8 flex flex-wrap justify-center gap-5">
         {SWATCHES.map(([n, c]) => (<div key={n} className="w-20"><div className="h-20 w-20 rounded-full border border-dusty-200 shadow-sm" style={{ backgroundColor: c }} /><p className="mt-2 text-xs text-dusty-800">{n}</p><p className="text-[10px] text-dusty-500 uppercase">{c}</p></div>))}
       </div>
