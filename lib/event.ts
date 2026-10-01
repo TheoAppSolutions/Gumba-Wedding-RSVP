@@ -3,9 +3,10 @@ export const EVENT = {
   groom: "Raymund Gumba",
   bride: "Vanessa Navera",
   initials: "R & V",
-  dateLong: "Sunday, December 21, 2025",
-  dateShort: "12 · 21 · 2025",
+  dateLong: "Sunday, December 21, 2026",
+  dateShort: "12 · 21 · 2026",
   time: "1:30 PM",
+  dateISO: "2026-12-21T13:30:00+13:30", // used by the countdown (Philippine time)
   theme: "Minimalist",
   color: "Dusty Blue",
   dressCode: "Semi-formal",
