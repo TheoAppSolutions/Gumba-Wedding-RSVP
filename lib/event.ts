@@ -24,6 +24,7 @@ export const MEDIA = {
 export const GIFT = {
   title: "Gift Policy",
   message: "Your presence at our wedding is the greatest gift of all. Should you wish to bless us further, a monetary gift would be warmly appreciated as we begin our life together.",
-  qr: "/gift-qr.png",
-  qrLabel: "Scan to send a gift",
+  // Replace null with a public image path such as "/gift-qr.png" when the final code is ready.
+  qr: null as string | null,
+  qrLabel: "Gift QR Code",
 };
