@@ -24,7 +24,8 @@ export default function Hero({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         priority
         quality={90}
         sizes="100vw"
-        className="object-cover object-center scale-[1.01]"
+        className="object-cover scale-[1.01]"
+        style={{ objectPosition: "20% center" }}
       />
       <div className="absolute inset-0 bg-gradient-to-b from-dusty-900/45 via-dusty-900/40 to-dusty-900/85" />
       <div className={`absolute inset-0 ${leftAligned ? "bg-gradient-to-r from-dusty-900/65 via-dusty-900/15 to-transparent" : "bg-[radial-gradient(circle_at_center,transparent_5%,rgba(38,54,68,0.28)_65%)]"}`} />
