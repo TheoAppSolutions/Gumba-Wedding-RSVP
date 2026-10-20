@@ -161,7 +161,7 @@ export default function Entourage() {
           </div>
 
           <Panel>
-            <Heading eyebrow="Our sweetest attendants" title="The Little Ones" />
+            <Heading eyebrow="Our sweetest attendants" title="The Bearers" />
             <div className="grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
               {BEARERS.map(({ role, names }) => (
                 <div key={role} className="text-center">
