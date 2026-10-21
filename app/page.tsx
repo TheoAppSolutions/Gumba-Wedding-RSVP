@@ -7,6 +7,7 @@ import Gallery from "@/components/Gallery";
 import Entourage from "@/components/Entourage";
 import Attire from "@/components/Attire";
 import Gift from "@/components/Gift";
+import GoodToKnow from "@/components/GoodToKnow";
 
 export default function Home() {
   return (
@@ -17,6 +18,7 @@ export default function Home() {
         <MapSection />
         <Attire />
         <Gift />
+        <GoodToKnow />
         <Gallery />
         <Entourage />
         <section id="rsvp" className="scroll-mt-4 bg-dusty-100 px-6 py-20">
