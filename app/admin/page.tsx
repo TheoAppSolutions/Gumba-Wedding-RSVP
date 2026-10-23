@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 type Rsvp = {
   id: string;
@@ -38,6 +38,14 @@ function TrashIcon() {
   );
 }
 
+function CloseIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="h-5 w-5" aria-hidden>
+      <path d="m6 6 12 12M18 6 6 18" />
+    </svg>
+  );
+}
+
 export default function Admin() {
   const [password, setPassword] = useState("");
   const [rows, setRows] = useState<Rsvp[] | null>(null);
@@ -47,8 +55,20 @@ export default function Admin() {
   const [attendance, setAttendance] = useState<AttendanceFilter>("all");
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [sortOrder, setSortOrder] = useState<SortOrder>("newest");
+  const [selectedRsvp, setSelectedRsvp] = useState<Rsvp | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Rsvp | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    if (!selectedRsvp) return;
+
+    function closeOnEscape(event: KeyboardEvent) {
+      if (event.key === "Escape") setSelectedRsvp(null);
+    }
+
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [selectedRsvp]);
 
   async function load(event?: React.FormEvent) {
     event?.preventDefault();
@@ -215,12 +235,24 @@ export default function Admin() {
               <thead className="border-b border-dusty-200 bg-dusty-50/80 text-[10px] uppercase tracking-[0.18em] text-dusty-500"><tr><th className="w-[23%] px-5 py-4 font-medium">Guest</th><th className="w-[16%] px-5 py-4 font-medium">Response</th><th className="px-5 py-4 font-medium">Message</th><th className="w-[19%] px-5 py-4 font-medium">Submitted</th><th className="w-16 px-3 py-4"><span className="sr-only">Actions</span></th></tr></thead>
               <tbody className="divide-y divide-dusty-100">
                 {filteredRows.map((row) => (
-                  <tr key={row.id} className="group transition hover:bg-dusty-50/70">
+                  <tr
+                    key={row.id}
+                    tabIndex={0}
+                    onClick={() => setSelectedRsvp(row)}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        setSelectedRsvp(row);
+                      }
+                    }}
+                    className="group cursor-pointer transition hover:bg-dusty-50/70 focus:bg-dusty-50/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-dusty-500"
+                    aria-label={`View full response from ${row.name}`}
+                  >
                     <td className="px-5 py-4 font-medium text-dusty-900">{row.name}</td>
                     <td className="px-5 py-4"><StatusBadge attending={row.attending} /></td>
                     <td className="px-5 py-4 leading-6 text-dusty-600"><p className="line-clamp-2">{row.message || <span className="italic text-dusty-400">No message</span>}</p></td>
                     <td className="px-5 py-4 text-xs leading-5 text-dusty-500"><time dateTime={row.created_at}>{new Date(row.created_at).toLocaleDateString(undefined, { month: "short", day: "numeric", year: "numeric" })}<br />{new Date(row.created_at).toLocaleTimeString(undefined, { hour: "numeric", minute: "2-digit" })}</time></td>
-                    <td className="px-3 py-4"><button onClick={() => setPendingDelete(row)} className="rounded-lg p-2 text-dusty-400 opacity-70 transition hover:bg-red-50 hover:text-red-700 focus:opacity-100 group-hover:opacity-100" aria-label={`Delete response from ${row.name}`}><TrashIcon /></button></td>
+                    <td className="px-3 py-4"><button onClick={(event) => { event.stopPropagation(); setPendingDelete(row); }} onKeyDown={(event) => event.stopPropagation()} className="rounded-lg p-2 text-dusty-400 opacity-70 transition hover:bg-red-50 hover:text-red-700 focus:opacity-100 group-hover:opacity-100" aria-label={`Delete response from ${row.name}`}><TrashIcon /></button></td>
                   </tr>
                 ))}
               </tbody>
@@ -228,9 +260,9 @@ export default function Admin() {
           </div>
           <div className="divide-y divide-dusty-100 md:hidden">
             {filteredRows.map((row) => (
-              <article key={row.id} className="p-5">
-                <div className="flex items-start justify-between gap-4"><div><h2 className="font-medium text-dusty-900">{row.name}</h2><div className="mt-2"><StatusBadge attending={row.attending} /></div></div><button onClick={() => setPendingDelete(row)} className="rounded-lg p-2 text-dusty-400 hover:bg-red-50 hover:text-red-700" aria-label={`Delete response from ${row.name}`}><TrashIcon /></button></div>
-                {row.message && <p className="mt-4 text-sm leading-6 text-dusty-600">{row.message}</p>}
+              <article key={row.id} tabIndex={0} role="button" onClick={() => setSelectedRsvp(row)} onKeyDown={(event) => { if (event.key === "Enter" || event.key === " ") { event.preventDefault(); setSelectedRsvp(row); } }} className="cursor-pointer p-5 transition hover:bg-dusty-50/70 focus:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-dusty-500" aria-label={`View full response from ${row.name}`}>
+                <div className="flex items-start justify-between gap-4"><div><h2 className="font-medium text-dusty-900">{row.name}</h2><div className="mt-2"><StatusBadge attending={row.attending} /></div></div><button onClick={(event) => { event.stopPropagation(); setPendingDelete(row); }} onKeyDown={(event) => event.stopPropagation()} className="rounded-lg p-2 text-dusty-400 hover:bg-red-50 hover:text-red-700" aria-label={`Delete response from ${row.name}`}><TrashIcon /></button></div>
+                {row.message && <p className="mt-4 line-clamp-3 text-sm leading-6 text-dusty-600">{row.message}</p>}
                 <time dateTime={row.created_at} className="mt-4 block text-[11px] uppercase tracking-[0.12em] text-dusty-400">{new Date(row.created_at).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })}</time>
               </article>
             ))}
@@ -238,6 +270,22 @@ export default function Admin() {
           {!filteredRows.length && <div className="px-6 py-16 text-center"><div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-dusty-100 text-dusty-500"><SearchIcon /></div><h2 className="mt-4 font-serif text-2xl text-dusty-800">No responses found</h2><p className="mt-2 text-sm text-dusty-500">{hasFilters ? "Try adjusting or clearing your filters." : "New guest responses will appear here."}</p></div>}
         </section>
       </div>
+
+      {selectedRsvp && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-dusty-950/45 p-5 backdrop-blur-sm" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget) setSelectedRsvp(null); }}>
+          <div role="dialog" aria-modal="true" aria-labelledby="message-title" aria-describedby="message-content" className="relative max-h-[85vh] w-full max-w-xl overflow-y-auto rounded-2xl bg-white p-6 shadow-2xl sm:p-8">
+            <button type="button" onClick={() => setSelectedRsvp(null)} className="absolute right-4 top-4 rounded-full p-2 text-dusty-400 transition hover:bg-dusty-100 hover:text-dusty-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-dusty-500" aria-label="Close guest message"><CloseIcon /></button>
+            <p className="pr-12 text-[10px] uppercase tracking-[0.25em] text-dusty-500">Guest message</p>
+            <h2 id="message-title" className="mt-2 pr-12 font-serif text-3xl font-medium text-dusty-900">{selectedRsvp.name}</h2>
+            <div className="mt-3 flex flex-wrap items-center gap-3">
+              <StatusBadge attending={selectedRsvp.attending} />
+              <time dateTime={selectedRsvp.created_at} className="text-xs text-dusty-400">{new Date(selectedRsvp.created_at).toLocaleString(undefined, { month: "short", day: "numeric", year: "numeric", hour: "numeric", minute: "2-digit" })}</time>
+            </div>
+            <div className="my-6 h-px bg-dusty-100" />
+            <p id="message-content" className={`whitespace-pre-wrap break-words text-sm leading-7 ${selectedRsvp.message ? "text-dusty-700" : "italic text-dusty-400"}`}>{selectedRsvp.message || "No message was included with this response."}</p>
+          </div>
+        </div>
+      )}
 
       {pendingDelete && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-dusty-950/45 p-5 backdrop-blur-sm" role="presentation" onMouseDown={(event) => { if (event.target === event.currentTarget && !deleting) setPendingDelete(null); }}>
