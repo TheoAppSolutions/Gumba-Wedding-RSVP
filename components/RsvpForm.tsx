@@ -7,21 +7,21 @@ const VARIANTS = {
     card: "rounded-[2rem] border border-dusty-200 bg-white/90 p-6 shadow-[0_22px_60px_rgba(54,75,93,0.12)] sm:p-9",
     input: "rounded-xl border border-dusty-200 bg-dusty-50/50 px-4",
     choice: "rounded-2xl",
-    selected: "border-dusty-600 bg-dusty-700 text-white shadow-md",
+    selected: "shadow-md",
     button: "rounded-full bg-dusty-700 hover:bg-dusty-800",
   },
   2: {
     card: "border-y border-dusty-200 bg-transparent py-8",
     input: "border-0 border-b border-dusty-300 bg-transparent px-0",
     choice: "rounded-none border-x-0 border-t-0",
-    selected: "border-dusty-700 bg-dusty-700 text-white",
+    selected: "",
     button: "rounded-none bg-dusty-800 uppercase tracking-[0.25em] hover:bg-dusty-900",
   },
   3: {
     card: "rounded-lg border border-dusty-300 bg-dusty-100/80 p-6 shadow-[0_18px_50px_rgba(54,75,93,0.08)] sm:p-9",
     input: "rounded-md border border-dusty-300 bg-white px-4",
     choice: "rounded-md",
-    selected: "border-dusty-500 bg-dusty-600 text-white shadow-md",
+    selected: "shadow-md",
     button: "rounded-md bg-dusty-600 hover:bg-dusty-700",
   },
 } as const;
@@ -128,8 +128,8 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         </legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup">
           {[
-            { value: true, title: "Joyfully accepts", detail: "I’ll be there", symbol: "✓" },
-            { value: false, title: "Regretfully declines", detail: "Unable to attend", symbol: "×" },
+            { value: true, title: "Joyfully accepts", detail: "I’ll be there", symbol: "♥", selectedColor: "border-emerald-600 bg-emerald-600" },
+            { value: false, title: "Regretfully declines", detail: "Unable to attend", symbol: "💔", selectedColor: "border-red-600 bg-red-600" },
           ].map((option) => {
             const selected = attending === option.value;
             return (
@@ -139,7 +139,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                 role="radio"
                 aria-checked={selected}
                 onClick={() => chooseAttendance(option.value)}
-                className={`flex min-h-20 items-center gap-3 border px-4 py-4 text-left transition focus:outline-none focus-visible:ring-4 focus-visible:ring-dusty-300 ${styles.choice} ${selected ? styles.selected : "border-dusty-200 bg-white/80 text-dusty-800 hover:border-dusty-400 hover:bg-white"}`}
+                className={`flex min-h-20 items-center gap-3 border px-4 py-4 text-left transition focus:outline-none focus-visible:ring-4 focus-visible:ring-dusty-300 ${styles.choice} ${selected ? `${styles.selected} ${option.selectedColor} text-white` : "border-dusty-200 bg-white/80 text-dusty-800 hover:border-dusty-400 hover:bg-white"}`}
               >
                 <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm ${selected ? "border-white/50 bg-white/15" : "border-dusty-300 bg-dusty-50 text-dusty-600"}`} aria-hidden>
                   {option.symbol}
