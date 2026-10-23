@@ -128,7 +128,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         </legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup">
           {[
-            { value: true, title: "Joyfully accepts", detail: "I’ll be there", symbol: "♥", selectedColor: "border-emerald-600 bg-emerald-600" },
+            { value: true, title: "Joyfully accepts", detail: "I’ll be there", symbol: "♥", selectedColor: "border-emerald-600 bg-emerald-600", iconColor: "text-red-600" },
             { value: false, title: "Regretfully declines", detail: "Unable to attend", symbol: "💔", selectedColor: "border-red-600 bg-red-600" },
           ].map((option) => {
             const selected = attending === option.value;
@@ -141,7 +141,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                 onClick={() => chooseAttendance(option.value)}
                 className={`flex min-h-20 items-center gap-3 border px-4 py-4 text-left transition focus:outline-none focus-visible:ring-4 focus-visible:ring-dusty-300 ${styles.choice} ${selected ? `${styles.selected} ${option.selectedColor} text-white` : "border-dusty-200 bg-white/80 text-dusty-800 hover:border-dusty-400 hover:bg-white"}`}
               >
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm ${selected ? "border-white/50 bg-white/15" : "border-dusty-300 bg-dusty-50 text-dusty-600"}`} aria-hidden>
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm ${selected ? "border-white/50 bg-white/15" : "border-dusty-300 bg-dusty-50 text-dusty-600"} ${option.iconColor ?? ""}`} aria-hidden>
                   {option.symbol}
                 </span>
                 <span>
