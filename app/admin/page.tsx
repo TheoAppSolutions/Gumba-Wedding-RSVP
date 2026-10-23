@@ -14,6 +14,8 @@ type AttendanceFilter = "all" | "yes" | "no";
 type DateFilter = "all" | "today" | "7days" | "30days";
 type SortOrder = "newest" | "oldest" | "name";
 
+const adminPasswordStorageKey = "wedding-admin-password";
+
 const dateFilterLabels: Record<DateFilter, string> = {
   all: "Any time",
   today: "Today",
@@ -51,6 +53,7 @@ export default function Admin() {
   const [rows, setRows] = useState<Rsvp[] | null>(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [restoringSession, setRestoringSession] = useState(true);
   const [query, setQuery] = useState("");
   const [attendance, setAttendance] = useState<AttendanceFilter>("all");
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
@@ -58,6 +61,17 @@ export default function Admin() {
   const [selectedRsvp, setSelectedRsvp] = useState<Rsvp | null>(null);
   const [pendingDelete, setPendingDelete] = useState<Rsvp | null>(null);
   const [deleting, setDeleting] = useState(false);
+
+  useEffect(() => {
+    const savedPassword = window.sessionStorage.getItem(adminPasswordStorageKey);
+    if (savedPassword) {
+      void load(undefined, savedPassword);
+    } else {
+      setRestoringSession(false);
+    }
+    // The saved credential only needs to be checked once when the admin page mounts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!selectedRsvp) return;
@@ -70,23 +84,28 @@ export default function Admin() {
     return () => document.removeEventListener("keydown", closeOnEscape);
   }, [selectedRsvp]);
 
-  async function load(event?: React.FormEvent) {
+  async function load(event?: React.FormEvent, passwordOverride?: string) {
     event?.preventDefault();
+    const adminPassword = passwordOverride ?? password;
     setError("");
     setLoading(true);
     try {
       const response = await fetch("/api/admin/rsvps", {
-        headers: { "x-admin-password": password },
+        headers: { "x-admin-password": adminPassword },
       });
       if (!response.ok) {
+        if (response.status === 401) window.sessionStorage.removeItem(adminPasswordStorageKey);
         setError(response.status === 401 ? "That password doesn’t look right." : "Couldn’t load the responses. Please try again.");
         return;
       }
+      setPassword(adminPassword);
+      window.sessionStorage.setItem(adminPasswordStorageKey, adminPassword);
       setRows((await response.json()).rsvps);
     } catch {
       setError("Couldn’t connect. Check your internet connection and try again.");
     } finally {
       setLoading(false);
+      setRestoringSession(false);
     }
   }
 
@@ -144,6 +163,14 @@ export default function Admin() {
     anchor.download = `rsvps-${new Date().toISOString().slice(0, 10)}.csv`;
     anchor.click();
     URL.revokeObjectURL(url);
+  }
+
+  if (restoringSession) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-dusty-50" aria-label="Restoring admin session">
+        <span className="h-7 w-7 animate-spin rounded-full border-2 border-dusty-300 border-t-dusty-800" aria-hidden />
+      </main>
+    );
   }
 
   if (!rows) {
