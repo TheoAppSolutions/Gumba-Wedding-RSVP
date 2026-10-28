@@ -79,12 +79,12 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         </div>
         <p className="mt-6 text-[10px] uppercase tracking-[0.4em] text-dusty-500">Response received</p>
         <h3 className="mt-3 font-serif text-4xl font-light italic text-dusty-800">
-          {submittedAttendance ? "We can’t wait to celebrate!" : "You’ll be in our hearts"}
+          {submittedAttendance ? "We can’t wait to celebrate!" : "We’ll miss you at the party"}
         </h3>
         <div className="mx-auto my-5 h-px w-16 bg-dusty-300" aria-hidden />
         <p className="mx-auto max-w-sm text-sm leading-7 text-dusty-700">
           Thank you, {name.split(" ")[0]}. {submittedAttendance
-            ? "Your seat is saved, and we’re so happy you’ll be joining us."
+            ? "We’re so happy you’ll be joining the birthday celebration."
             : "Thank you for letting us know. We’ll miss celebrating with you."}
         </p>
       </div>
@@ -128,8 +128,8 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
         </legend>
         <div className="mt-3 grid gap-3 sm:grid-cols-2" role="radiogroup">
           {[
-            { value: true, title: "Joyfully accepts", detail: "I’ll be there", symbol: "♥", selectedColor: "border-emerald-600 bg-emerald-600", iconColor: "text-red-600" },
-            { value: false, title: "Regretfully declines", detail: "Unable to attend", symbol: "💔", selectedColor: "border-red-600 bg-red-600" },
+            { value: true, title: "Count me in", detail: "I’ll be there", symbol: "✦", selectedColor: "border-emerald-600 bg-emerald-600" },
+            { value: false, title: "Can’t make it", detail: "Unable to attend", symbol: "♡", selectedColor: "border-dusty-600 bg-dusty-600" },
           ].map((option) => {
             const selected = attending === option.value;
             return (
@@ -141,7 +141,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
                 onClick={() => chooseAttendance(option.value)}
                 className={`flex min-h-20 items-center gap-3 border px-4 py-4 text-left transition focus:outline-none focus-visible:ring-4 focus-visible:ring-dusty-300 ${styles.choice} ${selected ? `${styles.selected} ${option.selectedColor} text-white` : "border-dusty-200 bg-white/80 text-dusty-800 hover:border-dusty-400 hover:bg-white"}`}
               >
-                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm ${selected ? "border-white/50 bg-white/15" : "border-dusty-300 bg-dusty-50 text-dusty-600"} ${option.iconColor ?? ""}`} aria-hidden>
+                <span className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-full border text-sm ${selected ? "border-white/50 bg-white/15" : "border-dusty-300 bg-dusty-50 text-dusty-600"}`} aria-hidden>
                   {option.symbol}
                 </span>
                 <span>
@@ -162,7 +162,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
       <div>
         <div className="flex items-end justify-between gap-4">
           <label htmlFor={`rsvp-message-${variant}`} className="text-[10px] uppercase tracking-[0.3em] text-dusty-600">
-            Message for the couple
+            Message for the birthday celebrant
           </label>
           <span className="text-[10px] tabular-nums text-dusty-400">{message.length}/1000</span>
         </div>
@@ -176,7 +176,7 @@ export default function RsvpForm({ variant = 1 }: { variant?: 1 | 2 | 3 }) {
             if (status === "error") setStatus("idle");
           }}
           className={`${fieldClass} resize-y`}
-          placeholder="Share a wish or a little note (optional)"
+          placeholder="Share a birthday wish or a little note (optional)"
         />
       </div>
 

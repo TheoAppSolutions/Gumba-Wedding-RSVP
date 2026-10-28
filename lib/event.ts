@@ -1,29 +1,18 @@
 export const EVENT = {
-  honoree: "Raymund & Vanessa",
-  groom: "Raymund Gumba",
-  bride: "Vanessa Navera",
-  initials: "R & V",
+  celebrant: "Raymund",
+  milestone: "60th birthday",
   dateLong: "Monday, December 21, 2026",
   dateShort: "12 · 21 · 2026",
   time: "1:30 PM",
-  dateISO: "2026-12-21T13:30:00+13:30",
-  theme: "Minimalist",
-  color: "Dusty Blue",
-  dressCode: "Semi-formal",
-  ceremony: { label: "Ceremony", name: "Sacred Heart Church", address: "Tacloban City" },
-  reception: { label: "Reception", name: "Hotel Alejandro Roof Deck", address: "Tacloban City" },
+  dateISO: "2026-12-21T13:30:00+08:00",
+  venue: {
+    name: "Hotel Alejandro Roof Deck",
+    address: "Tacloban City",
+  },
+  dressCode: "90s disco ball",
 };
 
 export const MEDIA = {
-  tagline: "Two hearts, one beautiful beginning. Join us as we say “I do.”",
   hero: "/hero.png",
   music: { src: "/music/background_music.mp3", volume: 0.5 },
-  gallery: Array.from({ length: 8 }, (_, i) => `/gallery/${String(i + 1).padStart(2, "0")}.jpg`),
-};
-
-export const GIFT = {
-  title: "Gift Policy",
-  message: "Your presence at our wedding is the greatest gift of all. Should you wish to bless us further, a monetary gift would be warmly appreciated as we begin our life together.",
-  qr: "/gift-qr.png" as string | null,
-  qrLabel: "Gift QR Code",
 };
